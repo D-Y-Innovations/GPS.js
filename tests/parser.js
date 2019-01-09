@@ -513,6 +513,18 @@ var tests = {
     'trueNorth': true,
     'type': 'HDT',
     'valid': true
+  },
+  // PTNL,AVR
+  '$PTNL,AVR,212405.20,+52.1531,Yaw,-0.0806,Tilt,,,12.575,3,1.4,16*39': {
+    'time': new Date(today+'T21:24:05.200Z'),
+    'yaw': 52.1531,
+    'tilt': -0.0806,
+    'roll': null,
+    'range': 12.575,
+    'quality': 'rtk',
+    'raw': '$PTNL,AVR,212405.20,+52.1531,Yaw,-0.0806,Tilt,,,12.575,3,1.4,16*39',
+    'type': 'PTNL,AVR',
+    'valid': true
   }
 };
 var collect = {};
