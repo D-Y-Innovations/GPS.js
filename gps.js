@@ -726,7 +726,7 @@
     nmea.push(last[1]);
 
     // Remove $ character and first two chars from the beginning
-    nmea[0] = nmea[0].slice(3);
+    nmea[0] = '$PTNL' === nmea[0] ? nmea[0].slice(1) : nmea[0].slice(3);
 
     if (GPS['mod'][nmea[0]] !== undefined) {
       // set raw data here as well?
