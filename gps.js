@@ -733,7 +733,7 @@
       var data = this['mod'][nmea[0]](line, nmea);
       data['raw'] = line;
       data['valid'] = isValid(line, nmea[nmea.length - 1]);
-      data['type'] = nmea[0];
+      data['type'] = data['type'] || nmea[0];
 
       return data;
     }
