@@ -219,6 +219,25 @@
     throw new Error('INVALID GSA FIX: ' + fix);
   }
 
+  function parseAVRFix(fix) {
+    var int = parseInt(fix, 10);
+
+    switch (int || fix) {
+      case '':
+      case 0:
+        return null;
+      case 1:
+        return 'fix'; // valid SPS fix
+      case 2:
+        return 'rtk-float'; // valid RTK float
+      case 3:
+        return 'rtk'; // valid RTK fix
+      case 4:
+        return 'dgps-fix'; // valid DGPS fix
+    }
+    throw new Error('INVALID GGA FIX: ' + fix);
+  }
+
   function parseRMC_GLLStatus(status) {
 
     switch (status) {
@@ -638,6 +657,53 @@
         'heading': parseFloat(hdt[1]),
         'trueNorth': hdt[2] === 'T'
       };
+    },
+
+    // PTNL,AVR: Time, yaw, tilt, range for moving baseline RTK
+    'PTNL': function (str, ptnl) {
+
+      if (ptnl[1] === 'AVR') {
+        const avr = ptnl.slice(1);
+        if (avr.length !== 13) {
+          throw new Error('Invalid PTNL,AVR length: ' + str);
+        }
+
+        /*
+          ------------------------------------------------------------------------------
+                    1         2        3
+                    |         |        |
+          $PTNL,AVR,212604.30,+52.1800,Yaw,,,-0.0807,Roll,12.579,3,1.4,16*21
+          ------------------------------------------------------------------------------
+
+          1. UTC of vector fix
+          2. Yaw angle, in degrees
+          3. Yaw
+          4. Tilt angle, in degrees
+          5. Tilt
+          6. Roll angle, in degrees
+          7. Roll
+          8. Range, in meters
+          9. GPS quality indicator:
+            0: Fix not available or invalid
+            1: Autonomous GPS fix
+            2: Differential carrier phase solution RTK (Float)
+            3: Differential carrier phase solution RTK (Fix)
+            4: Differential code-based solution, DGPS
+          10. PDOP
+          11. Number of satellites used in solution
+          12. Checksum
+        */
+        
+        return {
+          'time': parseTime(avr[1]),
+          'yaw': parseNumber(avr[2]),
+          'tilt': parseNumber(avr[4]),
+          'roll': parseNumber(avr[6]),
+          'range': parseNumber(avr[8]),
+          'quality': parseAVRFix(avr[9]),
+          'type': 'PTNL,AVR'
+        };
+      }
     }
   };
 
