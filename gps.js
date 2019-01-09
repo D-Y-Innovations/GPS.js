@@ -701,6 +701,8 @@
           'roll': parseNumber(avr[6]),
           'range': parseNumber(avr[8]),
           'quality': parseAVRFix(avr[9]),
+          'pdop': parseNumber(avr[10]),
+          'satellites': parseNumber(avr[11]),
           'type': 'PTNL,AVR'
         };
       }

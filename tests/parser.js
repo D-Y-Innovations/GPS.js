@@ -522,6 +522,8 @@ var tests = {
     'roll': null,
     'range': 12.575,
     'quality': 'rtk',
+    'pdop': 1.4,
+    'satellites': 16,
     'raw': '$PTNL,AVR,212405.20,+52.1531,Yaw,-0.0806,Tilt,,,12.575,3,1.4,16*39',
     'type': 'PTNL,AVR',
     'valid': true
